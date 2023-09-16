@@ -197,10 +197,12 @@ function extractEmails(str = '') {
  *             '└──────────┘\n'
  *
  */
-function getRectangleString(/* width, height */) {
-  throw new Error('Not implemented');
+function getRectangleString(width, height) {
+  const top = `┌${'─'.repeat(width - 2)}┐\n`;
+  const bottom = `└${'─'.repeat(width - 2)}┘\n`;
+  const middle = `${`│${' '.repeat(width - 2)}│\n`.repeat(height - 2)}`;
+  return top + middle + bottom;
 }
-
 /**
  * Encode specified string with ROT13 cipher
  * See details:  https://en.wikipedia.org/wiki/ROT13
@@ -217,8 +219,22 @@ function getRectangleString(/* width, height */) {
  *    => 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'
  *
  */
-function encodeToRot13(/* str */) {
-  throw new Error('Not implemented');
+
+function encodeToRot13(str) {
+  return str
+    .split('')
+    .map((el) => {
+      const index = el.charCodeAt();
+
+      if ((index >= 97 && index < 110) || (index >= 65 && index < 78)) {
+        return String.fromCharCode(index + 13);
+      }
+      if ((index >= 77 && index < 90) || (index >= 110 && index <= 122)) {
+        return String.fromCharCode(index - 13);
+      }
+      return el;
+    })
+    .join('');
 }
 
 /**
