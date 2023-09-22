@@ -224,13 +224,13 @@ function encodeToRot13(str) {
   return str
     .split('')
     .map((el) => {
-      const index = el.charCodeAt();
+      const char = el.charCodeAt();
 
-      if ((index >= 97 && index < 110) || (index >= 65 && index < 78)) {
-        return String.fromCharCode(index + 13);
+      if ((char >= 97 && char < 110) || (char >= 65 && char <= 77)) {
+        return String.fromCharCode(char + 13);
       }
-      if ((index >= 77 && index < 90) || (index >= 110 && index <= 122)) {
-        return String.fromCharCode(index - 13);
+      if ((char >= 77 && char < 91) || (char >= 110 && char <= 122)) {
+        return String.fromCharCode(char - 13);
       }
       return el;
     })
