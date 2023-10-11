@@ -35,11 +35,14 @@ function findElement(arr = [], value) {
  *    5 => [ 1, 3, 5, 7, 9 ]
  */
 function generateOdds(len) {
-  const arr = [];
-  for (let i = 1; i < len * 2; i += 2) {
-    arr.push(i);
-  }
-  return arr;
+  return new Array(len).fill(null).reduce((acc) => {
+    if (acc.length === 0) {
+      acc.push(1);
+      return acc;
+    }
+    acc.push(acc[acc.length - 1] + 2);
+    return acc;
+  }, []);
 }
 
 /**
@@ -216,11 +219,12 @@ function getTail(arr, n) {
  *    +'30,31,32,33,34'
  */
 function toCsvText(arr) {
-  return arr.reduce((a, b) => {
-    let c = a;
-    c += `${b.join(',')} /n`;
-    return c;
+  const csvText = arr.reduce((acc, textCsvArray) => {
+    let text = acc;
+    text += `${textCsvArray.join(',')}`;
+    return `${text}\n`;
   }, '');
+  return `${csvText}`.trim();
 }
 
 /**
@@ -235,7 +239,7 @@ function toCsvText(arr) {
  *   [ 10, 100, -1 ]      => [ 100, 10000, 1 ]
  */
 function toArrayOfSquares(arr = []) {
-  return arr.map((el) => Math.sqrt(el, 2));
+  return arr.map((el) => el ** 2);
 }
 
 /**
@@ -252,15 +256,18 @@ function toArrayOfSquares(arr = []) {
  *   [ 0, 0, 0, 0, 0]         => [ 0, 0, 0, 0, 0]
  *   [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] => [ 1, 3, 6, 10, 15, 21, 28, 36, 45, 55 ]
  */
-function getMovingSum(arr = []) {
-  const array = [];
-  let count = 0;
 
-  for (let i = 0; i < arr.length; i += 1) {
-    count += arr[i];
-    array.push(count);
-  }
-  return array;
+function getMovingSum(arr = []) {
+  return arr.reduce((acc, num) => {
+    if (acc.length === 0) {
+      acc.push(num);
+      return acc;
+    }
+
+    const sum = acc[acc.length - 1] + num;
+    acc.push(sum);
+    return acc;
+  }, []);
 }
 
 /**

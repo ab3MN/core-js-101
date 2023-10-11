@@ -50,7 +50,9 @@ function getCircleCircumference(radius) {
  *  -3, 3  => 0
  */
 function getAverage(value1, value2) {
-  return (value1 + value2) / 2;
+  const average = (value1 + value2) / 2;
+
+  return average === Infinity ? Number.MAX_VALUE : average;
 }
 
 /**
@@ -123,7 +125,8 @@ function getAngleBetweenVectors(x1, y1, x2, y2) {
  *     0     => 0
  */
 function getLastDigit(value) {
-  return `${value}`[0];
+  const str = `${value}`;
+  return +str[str.length - 1];
 }
 
 /**
@@ -176,9 +179,7 @@ function getParallelepipedDiagonal(/* a, b, c */) {
  *   1678, 3  => 2000
  */
 function roundToPowerOfTen(num, pow) {
-  return pow === 0
-    ? num
-    : Math.round(num / Math.sqrt(10, pow)) * Math.sqrt(10, pow);
+  return pow === 0 ? num : Math.round(num / 10 ** pow) * 10 ** pow;
 }
 
 /**
@@ -198,7 +199,16 @@ function roundToPowerOfTen(num, pow) {
  *   16 => false
  *   17 => true
  */
-function isPrime() {}
+function isPrime(num) {
+  if (num <= 1) return false;
+
+  for (let i = 2; i <= Math.sqrt(num); i += 1) {
+    if (num % i === 0) {
+      return false;
+    }
+  }
+  return true;
+}
 
 /**
  * Tries to convert value to number and returns it if conversion was successful;
@@ -216,9 +226,8 @@ function isPrime() {}
  *   toNumber(new Number(42), 0) => 42
  */
 function toNumber(value, def) {
-  const valueToNumber = value / 2;
-  // eslint-disable-next-line no-restricted-globals
-  return isNaN(valueToNumber) ? def : value;
+  const valueToNumber = parseInt(value, 10);
+  return Number.isNaN(valueToNumber) ? def : valueToNumber;
 }
 
 module.exports = {
