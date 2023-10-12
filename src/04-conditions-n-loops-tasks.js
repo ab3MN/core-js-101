@@ -181,11 +181,13 @@ function findFirstSingleChar(str) {
   const obj = str.split('').reduce((acc, letter) => {
     const letters = acc;
     if (letter in letters) {
-      letters.letter = +1;
-    } else letters.letter = 0;
+      letters[letter] = +1;
+    } else letters[letter] = 0;
     return letters;
   }, {});
-  return obj;
+  const firstSingleChar = Object.entries(obj).find((el) => el[1] === 0);
+
+  return firstSingleChar ? firstSingleChar[0] : null;
 }
 
 /**
@@ -210,10 +212,18 @@ function findFirstSingleChar(str) {
  *   5, 3, true, true   => '[3, 5]'
  *
  */
-function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
-  throw new Error('Not implemented');
-}
+function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
+  let start = '[';
+  let end = ']';
 
+  if (!isStartIncluded) {
+    start = '(';
+  }
+  if (!isEndIncluded) {
+    end = ')';
+  }
+  return a < b ? `${start}${a}, ${b}${end}` : `${start}${b}, ${a}${end}`;
+}
 /**
  * Reverse the specified string (put all chars in reverse order)
  *
@@ -226,8 +236,8 @@ function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
  * 'rotator' => 'rotator'
  * 'noon' => 'noon'
  */
-function reverseString(/* str */) {
-  throw new Error('Not implemented');
+function reverseString(str) {
+  return str.split('').reverse().join('');
 }
 
 /**
@@ -242,8 +252,8 @@ function reverseString(/* str */) {
  *   87354 => 45378
  *   34143 => 34143
  */
-function reverseInteger(/* num */) {
-  throw new Error('Not implemented');
+function reverseInteger(num) {
+  return +`${num}`.split('').reverse().join('');
 }
 
 /**
@@ -266,8 +276,26 @@ function reverseInteger(/* num */) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+function isCreditCardNumber(ccn) {
+  const arrayOfCardNumbers = `${ccn}`.split('');
+  if (arrayOfCardNumbers.length !== 16) return false;
+  const total = arrayOfCardNumbers.reduce((acc, number, i) => {
+    let sum = acc;
+    const num = +number;
+    if (i % 2 === 1) {
+      sum += num;
+    } else if (i % 2 === 0) {
+      const dobleNumber = num * 2;
+      let count = dobleNumber;
+      if (dobleNumber > 9) {
+        count = dobleNumber - 9;
+      }
+      sum += count;
+    }
+    return sum;
+  }, 0);
+
+  return total % 10 === 0;
 }
 
 /**
