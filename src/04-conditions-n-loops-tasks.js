@@ -276,15 +276,30 @@ function reverseInteger(num) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(ccn) {
-  const arrayOfCardNumbers = `${ccn}`.split('');
-  if (arrayOfCardNumbers.length !== 16) return false;
-  const total = arrayOfCardNumbers.reduce((acc, number, i) => {
+const isLuhnValid = (arr) => {
+  if (arr.length % 2 === 0) {
+    return arr.reduce((acc, number, i) => {
+      let sum = acc;
+      const num = +number;
+      if (i % 2 === 1) {
+        sum += num;
+      } else if (i % 2 === 0) {
+        const dobleNumber = num * 2;
+        let count = dobleNumber;
+        if (dobleNumber > 9) {
+          count = dobleNumber - 9;
+        }
+        sum += count;
+      }
+      return sum;
+    }, 0);
+  }
+  return arr.reduce((acc, number, i) => {
     let sum = acc;
     const num = +number;
-    if (i % 2 === 1) {
+    if (i % 2 === 0) {
       sum += num;
-    } else if (i % 2 === 0) {
+    } else if (i % 2 === 1) {
       const dobleNumber = num * 2;
       let count = dobleNumber;
       if (dobleNumber > 9) {
@@ -294,7 +309,12 @@ function isCreditCardNumber(ccn) {
     }
     return sum;
   }, 0);
+};
 
+function isCreditCardNumber(ccn) {
+  const arrayOfCardNumbers = `${ccn}`.split('');
+
+  const total = isLuhnValid(arrayOfCardNumbers);
   return total % 10 === 0;
 }
 
