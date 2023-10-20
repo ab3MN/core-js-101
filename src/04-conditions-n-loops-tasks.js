@@ -443,7 +443,7 @@ function getCommonDirectoryPath(pathes) {
   for (let i = 0; i < firstPath.length; i += 1) {
     const item = firstPath[i];
 
-    if (partsOfPathes.every((el) => el[i] === item)) samePath += `/${item}`;
+    if (partsOfPathes.every((el) => el[i] === item)) samePath += `${item}/`;
   }
   return samePath;
 }
