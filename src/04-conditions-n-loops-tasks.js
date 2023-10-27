@@ -500,10 +500,59 @@ function getMatrixProduct(/* m1, m2 */) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
-}
+const fillEmptySlotsInArray = (arr) => {
+  const res = [];
+  for (let i = 0; i < 3; i += 1) {
+    if (!(i in arr)) res.push(null);
+    else res.push(arr[i]);
+  }
+  return res;
+};
 
+const getIndexesOfItem = (arr, item) => {
+  const itemIndexes = arr.reduce((acc, nextItem, index) => {
+    const array = [...acc];
+    if (nextItem === item) array.push(index);
+    return array;
+  }, []);
+  return itemIndexes;
+};
+
+const getTicTacToeWinner = (x, o) => {
+  const winnersIndexes = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
+
+  let winner;
+  winnersIndexes.forEach((index) => {
+    if (x.includes(index[0]) && x.includes(index[1]) && x.includes(index[2])) {
+      winner = 'X';
+    }
+    if (o.includes(index[0]) && o.includes(index[1]) && o.includes(index[2])) {
+      winner = '0';
+    }
+  });
+
+  return winner;
+};
+function evaluateTicTacToePosition(position = []) {
+  const positionWithoutEmptySlots = position
+    .map((slot) => fillEmptySlotsInArray(slot))
+    .flat();
+
+  const xPosition = getIndexesOfItem(positionWithoutEmptySlots, 'X');
+  const oPosition = getIndexesOfItem(positionWithoutEmptySlots, '0');
+
+  const winner = getTicTacToeWinner(xPosition, oPosition);
+  return winner;
+}
 module.exports = {
   getFizzBuzz,
   getFactorial,
